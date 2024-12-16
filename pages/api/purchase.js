@@ -3,6 +3,7 @@ import {randomBytes} from 'crypto';
 
 // 4899939998491778 04/27 917
 
+const MY_URL = 'https://bcc-test.yoshop.net';
 const API_URL = 'https://test3ds.bcc.kz:5445/cgi-bin/cgi_link';
 const MAC_KEY = '6BB0AC02E47BDF73D98FEB777F3B5294';
 const CURRENCY = '398';
@@ -12,7 +13,6 @@ const MERCHANT_RN_ID = '';
 const MERCH_NAME = 'TOO "MERCHANT"';
 const MERCH_GMT = '6';
 const LANG = 'ru';
-const MY_IP = '58.230.84.162';
 
 function sign(...fields) {
     const data = fields.map(i => `${i.length}${i}`).join('');
@@ -74,13 +74,13 @@ async function request({amount, order, description, clientIp}) {
     params.append('TIMESTAMP', timestamp);
     params.append('MERCH_GMT', `+${MERCH_GMT}`);
     params.append('TRTYPE', TR_TYPE);
-    params.append('BACKREF', `http://${MY_IP}:3000/api/purchase`);
+    params.append('BACKREF', `${MY_URL}/api/purchase`);
     params.append('JUST', LANG);
     params.append('NONCE', nonce);
     params.append('P_SIGN', signature);
     params.append('MK_TOKEN', 'MERCH');
-    params.append('NOTIFY_URL', `http://${MY_IP}:3000/api/notify`);
-    params.append('CLIENT_IP', /*clientIp*/MY_IP);
+    params.append('NOTIFY_URL', `${MY_URL}/api/notify`);
+    params.append('CLIENT_IP', clientIp);
     params.append('M_INFO', mobileInfo);
     logCurlCommand(params);
 
