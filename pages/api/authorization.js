@@ -10,8 +10,10 @@ const MAC_KEY = '6BB0AC02E47BDF73D98FEB777F3B5294';
 const CURRENCY = '398';
 const TERMINAL = '88888881';
 const MERCHANT = 'finenex';
-const MERCHANT_RN_ID = '';
 const MERCH_NAME = 'TOO "FINENEX"';
+const MERCH_URL = 'https://www.finenex.net';
+const COUNTRY = 'KZ';
+const BRANDS = 'VISA, Mastercard';
 const MERCH_GMT = '+5';
 const LANG = 'ru';
 
@@ -50,10 +52,10 @@ function logCurlCommand(params) {
 }
 
 async function request({amount, order, description, clientIp}) {
-    const TR_TYPE = '1';
+    const TR_TYPE = '0';
     const timestamp = getTimestamp();
     const nonce = getNonce();
-    const signature = sign(amount, CURRENCY, order, MERCHANT, TERMINAL, MERCH_GMT, timestamp, TR_TYPE, nonce);
+    const signature = sign(amount, CURRENCY, order, MERCHANT, TERMINAL, COUNTRY, MERCH_GMT, timestamp, TR_TYPE, nonce);
     const mobileInfo = btoa(JSON.stringify({
         'browserScreenHeight': '1920',
         'browserScreenWidth': '1080',
@@ -67,13 +69,15 @@ async function request({amount, order, description, clientIp}) {
     params.append('AMOUNT', amount);
     params.append('CURRENCY', CURRENCY);
     params.append('ORDER', order);
-    params.append('MERCH_RN_ID', MERCHANT_RN_ID);
     params.append('DESC', description);
     params.append('MERCHANT', MERCHANT);
     params.append('MERCH_NAME', MERCH_NAME);
+    params.append('MERCH_URL', MERCH_URL);
+    params.append('COUNTRY', COUNTRY);
+    params.append('BRANDS', BRANDS);
     params.append('TERMINAL', TERMINAL);
     params.append('TIMESTAMP', timestamp);
-    params.append('MERCH_GMT', MERCH_GMT);
+    params.append('MERCH_GMT', `+${MERCH_GMT}`);
     params.append('TRTYPE', TR_TYPE);
     params.append('BACKREF', `${MY_URL}/api/purchase`);
     params.append('JUST', LANG);
@@ -92,6 +96,7 @@ async function request({amount, order, description, clientIp}) {
 }
 
 export default async function handler(req, res) {
+    console.log(`remote address: ${req.socket.remoteAddress}`);
     res.status(200).end(await request({
         amount: req.query.amount ?? '50.00',
         order: req.query.order ?? (Math.floor(Math.random() * 999999) + 1000000).toString(),
