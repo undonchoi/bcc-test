@@ -3,7 +3,7 @@ import {randomBytes} from 'crypto';
 
 // 4899939998491778 04/27 917
 
-const MY_URL = 'https://bcc-test.yoshop.net';
+const MY_URL = 'https://bcc-test.yoshop.net:443';
 // const MY_URL = 'http://localhost:3000';
 const API_URL = 'https://test3ds.bcc.kz:5445/cgi-bin/cgi_link';
 const MAC_KEY = '6BB0AC02E47BDF73D98FEB777F3B5294';
