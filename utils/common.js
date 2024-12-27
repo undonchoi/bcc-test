@@ -7,7 +7,8 @@ export const MY_URL = 'https://bcc-test.yoshop.net:443';
 // const MY_URL = 'http://localhost:3000';
 const TEST_API_URL = 'https://test3ds.bcc.kz:5445/cgi-bin/cgi_link';
 const API_URL = 'https://3dsecure.bcc.kz:5443/cgi-bin/cgi_link';
-const MAC_KEY = '6BB0AC02E47BDF73D98FEB777F3B5294';
+const TEST_MAC_KEY = '6BB0AC02E47BDF73D98FEB777F3B5294';
+const MAC_KEY = '63FE8777F32F87B998A295A942AD58E1';
 
 export function newOrderNo() {
     return (Math.floor(Math.random() * 899999) + 100000).toString()
@@ -24,10 +25,10 @@ export function mobileInfo(w, h, cc, subscriber) {
     }));
 }
 
-function sign(fields) {
+function sign(fields, macKey) {
     const data = fields.map(i => `${i.length}${i}`).join('');
     const shaObj = new jsSHA("SHA-1", "TEXT");
-    shaObj.setHMACKey(MAC_KEY, "HEX");
+    shaObj.setHMACKey(macKey, "HEX");
     shaObj.update(data);
     const signed = shaObj.getHMAC("HEX").toUpperCase();
     console.log(`sign: ${data} => ${signed}`)
@@ -91,7 +92,7 @@ export async function request(data, isReal) {
         }
 
         return params.get(key)
-    }));
+    }), isReal ? MAC_KEY : TEST_MAC_KEY);
     params.append('P_SIGN', sig);
     const url = isReal ? API_URL : TEST_API_URL;
     logCurlCommand(url, params);
