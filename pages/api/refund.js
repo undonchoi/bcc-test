@@ -20,5 +20,6 @@ export default async function handler(req, res) {
         JUST: 'ru',
         NOTIFY_URL: `${MY_URL}/api/notify`,
     }
-    res.status(200).end(await request(data));
+    const isReal = req.query.MODE === 'R';
+    res.status(200).end(await request(data, isReal));
 }

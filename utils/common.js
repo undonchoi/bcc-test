@@ -5,7 +5,8 @@ import {randomBytes} from "crypto";
 
 export const MY_URL = 'https://bcc-test.yoshop.net:443';
 // const MY_URL = 'http://localhost:3000';
-const API_URL = 'https://test3ds.bcc.kz:5445/cgi-bin/cgi_link';
+const TEST_API_URL = 'https://test3ds.bcc.kz:5445/cgi-bin/cgi_link';
+const API_URL = 'https://3dsecure.bcc.kz:5443/cgi-bin/cgi_link';
 const MAC_KEY = '6BB0AC02E47BDF73D98FEB777F3B5294';
 
 export function newOrderNo() {
@@ -47,8 +48,8 @@ function getNonce() {
     return randomBytes(16).toString('hex').toUpperCase();
 }
 
-function logCurlCommand(params) {
-    let cmd = `curl --location '${API_URL}'`;
+function logCurlCommand(url, params) {
+    let cmd = `curl --location '${url}'`;
 
     for (let key of params.keys()) {
         cmd += ` \\\n  --data-urlencode '${key}=${params.get(key)}'`;
@@ -57,7 +58,7 @@ function logCurlCommand(params) {
     console.log(cmd);
 }
 
-export async function request(data) {
+export async function request(data, isReal) {
     const params = new URLSearchParams();
     let signKeys;
 
@@ -92,9 +93,10 @@ export async function request(data) {
         return params.get(key)
     }));
     params.append('P_SIGN', sig);
-    logCurlCommand(params);
+    const url = isReal ? API_URL : TEST_API_URL;
+    logCurlCommand(url, params);
 
-    const response = await fetch(API_URL, {
+    const response = await fetch(url, {
         method: 'POST', body: params, redirect: 'follow'
     });
     return await response.text();
