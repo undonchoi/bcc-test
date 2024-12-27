@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         BACKREF: 'javascript:history.back()',
         JUST: 'ru',
         MK_TOKEN: 'MERCH',
-        NOTIFY_URL: `${MY_URL}/api/notify`,
+        NOTIFY_URL: `${MY_URL}/api/purchased`,
         CLIENT_IP: req.socket.remoteAddress ?? '0.0.0.0',
         M_INFO: mobileInfo(1920, 1080, '7', '7475558888'),
     };

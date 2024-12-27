@@ -16,9 +16,9 @@ export default async function handler(req, res) {
         TERMINAL: '88888881',
         MERCH_GMT: '+5',
         TRTYPE: '14',
-        BACKREF: `${MY_URL}/api/purchase`,
+        BACKREF: 'javascript:history.back()',
         JUST: 'ru',
-        NOTIFY_URL: `${MY_URL}/api/notify`,
+        NOTIFY_URL: `${MY_URL}/api/refunded`,
     }
     const isReal = req.query.MODE === 'R';
     res.status(200).end(await request(data, isReal));
