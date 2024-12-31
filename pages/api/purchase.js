@@ -1,4 +1,4 @@
-import { mobileInfo, MY_URL, newOrderNo, request } from "@/utils/common";
+import { mobileInfo, MY_URL, newOrderNo, request } from "@/app/lib/common";
 
 export default async function handler(req, res) {
   const isReal = req.query.MODE === 'R';

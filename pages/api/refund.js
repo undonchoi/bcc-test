@@ -1,4 +1,4 @@
-import { MY_URL, request } from "@/utils/common";
+import { MY_URL, request } from "@/app/lib/common";
 
 export default async function handler(req, res) {
   if (!req.query.AMOUNT || !req.query.ORDER || !req.query.RRN ||
